@@ -197,6 +197,57 @@ HTML文档并不只与自己相关——这个章节定义了大量能够影响�
 
 这是一个定义，要求，或者解释。
 
+<div style="background-color: green">这是一张便条</div>
+---
+<div style="background-color: grey">这是一个举例</div>
+---
+<div style="background-color: red">这是一条警告</div>
+---
+```
+[Exposed = Window]
+interface Example {
+    //这是一条IDL定义
+}
+```
+> variable = object.method([optionalArgument])
+这是一张便条描述了接口的使用
+
+<div style="background-color: yellow">这是一条CSS片段</div>
+
+一条术语的定义实例是被标记成**this**, 使用这个术语是被标记成**this** 或者 **_this_**。
+一个元素，属性或者API的定义实例是被标记成像<font color="red">this</font>。引用这个元素、属性或者API也被标记成
+<font color="red">this</font>。
+其他的代码片段被标记为灰色的。
+变量被标记成为斜体细黑。
+在一个算法中，同步代码段中的步骤是被标记成为 ⌛。
+在一些情况下，要求是被用列表的形式给出，这些列表项表明一些条件和相应的要求。在这种情况下，适用于一个条件的要求总是在该条件之后的第一组要求，即使在这些要求有多个条件的情况下也是如此。下面是一个示例:
+
+```
+1.This is a condition
+2.This is another condition
+This is the requirement that applies to the conditions above.
+3.This is a third condition
+This is the requirement that applies to the third condition.
+```
+
+## 1.10 HTML的快速介绍
+
+一个基础的HTML文档看起来像下面这样：
+```
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Sample page</title>
+  </head>
+  <body>
+    <h1>Sample page</h1>
+    <p>This is a <a href="demo.html">Simple</a>Sample.</p>
+    <!-- this is a comment -->
+  </body>
+</html>
+```
+
+HTML文档是由元素和文本组成的树结构。每个元素是被
 
 
 
