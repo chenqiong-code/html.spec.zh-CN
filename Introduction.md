@@ -247,7 +247,110 @@ This is the requirement that applies to the third condition.
 </html>
 ```
 
-HTML文档是由元素和文本组成的树结构。每个元素是被
+HTML文档是由元素和文本组成的树结构。每个元素在这里是被表示由一个开始标记，例如```<body>```，和一个结束标记```</body>```。（某些开始和结束标记能够在某些情况下被省略，它们在这种情况下被其他标记暗示）
+
+标签必须被嵌套这样元素才能够被当作是在其他元素内部，而不是相互交叉：
+```
+<p>This is <em> very <strong>wrong</em>!</strong></p>
+<p>This <em> is <strong>correct</strong>.</em></p>
+```
+
+这个规范定义了一套能够在HTML中使用的元素集，以及关于元素能够被嵌套的方式。
+
+元素拥有属性，控制着元素会如何工作。在下面的例子中，这是一个超链接，用一个a元素和它的href属性构造。
+```
+<a href="demo.html">simple</a>
+```
+属性被放在开始标记里，是由名值对组成，并且被一个"="号分离。如果不包含ASCII whitespace 或者"'`=<>中的其中之一，这个属性的值能够不加引号。否则，它必须用一个单引号或者双引号包裹起来。
+如果值是一个空字符串，那么这个值可以和"="一起省略。
+
+```
+<!-- 属性值是空字符串 -->
+<input name=address disable>
+<input name=address disable="">
+
+<!-- 属性拥有一个值 -->
+<input name=address maxlength=200>
+<input name=address maxlength='200'>
+<input name=address maxlength="200">
+```
+HTML用户代理（例如浏览器）解析这个标记，把它们转变成一颗DOM树。一个DOM树是一个文档在内存中的表示形式。
+
+DOM树包含一些种类的节点，特别是是DocumentType节点，Element节点，Text节点，Comment节点，某些情况下还有ProcessingInstruction节点。
+
+这部分一开始标记的快照能够被转换成下面这样的DOM树。
+```
+DOCTYPE: html
+    html lang="en"
+        head
+            #text: 回车+空格+空格
+            title
+                #text: Sample page
+            #text: 回车+空格
+        #text: 回车+空格
+        body
+            #text: 回车+空格+空格
+            h1
+                #text: Sample page
+            #text: 回车+空格+空格
+            p
+                #text: This is a 
+                a href ="demo.html"
+                    #text: simple
+                #text: sample
+            #text: 回车+空格+空格
+            #comment: this is a comment
+            #text: 回车+空格+回车
+```
+
+这个树的document element是html元素，这个元素总是在HTML文档中发现。这个元素包含两个元素，head和body,以及一个text节点在它们中间。
+
+在DOM树中会有大量的Text节点，而不是我们期待的中只有一个，原因是这个源代码中包含一些空格和换行符，它们最终都会成为DOM树中的Text节点。然而，因为历史原因，并不是所有的在原始标记中空格和换行都会被在DOM中显示。特别的是，所有在head开始标记之前的whitespace被静默丢弃，并且所有的whitespace在body之后被放在body结束标记之后。
+
+这个head元素包含一个tilte元素，这个title元素中包含了一个Text节点用的是文本“Sample page”。
+相似的，这个body元素包含一个h1元素,一个p元素以及一个comment。
+
+这个DOM树能够被页面中的脚本所操纵，脚本（典型的是JavaScript）是一个小程序，能够通过script元素嵌入到页面中的脚本，也可以用event handler content attribute。例如，这是一个用一个脚本设置form表单output元素的值去说“hello world”的表单。
+```
+<form name="main">
+    Result: <output name="result"></output>
+    <script>
+        document.forms.main.elements.result.value = 'Hello World';
+    </script>
+</form>
+```
+在DOM树中的每一个元素都是由一个对象表示，这些对象都有API,因此它们能够被操作。例如，一个链接（在这一节最上面的a元素）能够通过下面的方式改变他的*href*属性：
+>  var a = document.links[0];
+a.href = 'sample.html';
+a.protocol = 'https';
+a.setAttribute('href', 'https://example.com/');
+
+因为DOM树是在处理和呈现html文档的实现（尤其是交互实现比如web浏览器）的时候被使用。这个规范主要是用DOM树来表达术语，而不是上面描述的标记。
+
+HTML文档是一个交互内容的描述，这个描述是独立于媒体的。HTML文档能够被渲染到一个屏幕上，或者语音合成器，或者盲文显示。创作者能够使用样式语言比如CSS来确切的影响渲染的方式。
+
+在下面的例子中，页面采用了CSS来影响渲染的发生。
+```
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <title>Sample styled page</title>
+  <style>
+   body { background: navy; color: yellow; }
+  </style>
+ </head>
+ <body>
+  <h1>Sample styled page</h1>
+  <p>This page is just a demo.</p>
+ </body>
+</html>
+```
+关于如何使用HTML的更多细节，鼓励创作者去查阅教程和指南。该规范中的一些示例可能会有用，但是新手作者需要注意，该规范定义了该语言一定层次的细节，这在一开始可能很难被理解。
+
+### 1.10.1 用HTML写安全的应用
+
+
+
 
 
 
